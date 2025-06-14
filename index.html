@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Comprobantes de Abono - Orbitravel</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --primary-light: #3b82f6;
+            --primary-dark: #1d4ed8;
+            --secondary-color: #10b981;
+            --accent-color: #f59e0b;
+            --danger-color: #ef4444;
+            --warning-color: #f97316;
+            --success-color: #059669;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --bg-primary: #f8fafc;
+            --bg-secondary: #ffffff;
+            --border-color: #e2e8f0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-secondary: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            color: var(--text-primary);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            gap: 2rem;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 2rem;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        /* Form Container */
+        .form-container {
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-xl);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .form-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .form-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .section-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.875rem;
+        }
+
+        .section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .form-grid {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .form-grid-2 {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: var(--bg-secondary);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.875rem 2rem;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: var(--gradient-secondary);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%);
+            color: white;
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Receipt Preview */
+        .receipt-preview {
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            padding: 0;
+            box-shadow: var(--shadow-xl);
+            overflow: hidden;
+            display: none;
+            animation: slideIn 0.5s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .receipt-header {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .receipt-logo {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .logo-placeholder {
+            width: 60px;
+            height: 60px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.5rem;
+        }
+
+        .company-info h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.25rem;
+        }
+
+        .company-info p {
+            opacity: 0.9;
+            font-size: 0.9rem;
+        }
+
+        .receipt-info {
+            text-align: right;
+        }
+
+        .receipt-title {
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .receipt-meta {
+            opacity: 0.9;
+        }
+
+        .receipt-content {
+            padding: 2rem;
+        }
+
+        .receipt-section {
+            margin-bottom: 2rem;
+        }
+
+        .receipt-section-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        .info-grid {
+            display: grid;
+            gap: 0.75rem;
+        }
+
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            background: var(--bg-primary);
+            border-radius: 8px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .info-label {
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+
+        .info-value {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .payment-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .payment-table th {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .payment-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+        }
+
+        .payment-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .amount-highlight {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--primary-color);
+        }
+
+        .balance-summary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .balance-amount {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .balance-label {
+            opacity: 0.9;
+            font-size: 1rem;
+        }
+
+        .details-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .details-list li {
+            padding: 0.5rem 0;
+            border-bottom: 1px solid var(--border-color);
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .details-list li:last-child {
+            border-bottom: none;
+        }
+
+        .details-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success-color);
+            font-weight: 700;
+        }
+
+        .contact-info {
+            background: var(--bg-primary);
+            padding: 1.5rem;
+            border-radius: 12px;
+            border-left: 4px solid var(--accent-color);
+        }
+
+        .contact-info h3 {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .contact-links {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .contact-link:hover {
+            color: var(--primary-dark);
+        }
+
+        .footer-note {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .form-container {
+                padding: 1.5rem;
+            }
+
+            .form-grid-2 {
+                grid-template-columns: 1fr;
+            }
+
+            .header h1 {
+                font-size: 2rem;
+            }
+
+            .receipt-header {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .receipt-info {
+                text-align: center;
+            }
+
+            .button-group {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .contact-links {
+                flex-direction: column;
+            }
+        }
+
+        /* Print Styles */
+        @media print {
+            body {
+                background: white;
+                padding: 0;
+                margin: 0;
+            }
+
+            .header,
+            .form-container,
+            .button-group {
+                display: none !important;
+            }
+
+            .receipt-preview {
+                display: block !important;
+                box-shadow: none;
+                border-radius: 0;
+                margin: 0;
+                padding: 0;
+            }
+
+            .receipt-content {
+                padding: 1rem;
+            }
+
+            .receipt-header {
+                background: #667eea !important;
+                -webkit-print-color-adjust: exact;
+                color-adjust: exact;
+            }
+        }
+
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Success Animation */
+        .success-checkmark {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--success-color);
+            position: relative;
+        }
+
+        .success-checkmark::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🌍 Orbitravel</h1>
+            <p>Generador de Comprobantes de Abono</p>
+        </div>
+
+        <div class="form-container">
+            <h2 class="form-title">Crear Nuevo Comprobante</h2>
+            <form id="receiptForm">
+                <div class="form-section">
+                    <div class="section-header">
+                        <div class="section-icon">1</div>
+                        <h3 class="section-title">Datos del Cliente</h3>
+                    </div>
+                    <div class="form-grid form-grid-2">
+                        <div class="form-group">
+                            <label class="form-label" for="clientName">Nombre Completo</label>
+                            <input type="text" id="clientName" class="form-input" value="VANIA CANALES CEA" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="clientEmail">Correo Electrónico</label>
+                            <input type="email" id="clientEmail" class="form-input" placeholder="cliente@email.com">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="clientAddress">Dirección</label>
+                        <input type="text" id="clientAddress" class="form-input" placeholder="Dirección del cliente">
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-header">
+                        <div class="section-icon">2</div>
+                        <h3 class="section-title">Información del Viaje</h3>
+                    </div>
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="tripDescription">Descripción del Viaje</label>
+                            <input type="text" id="tripDescription" class="form-input" value="Viaje grupal Encanto Europeo" required>
+                        </div>
+                        <div class="form-grid form-grid-2">
+                            <div class="form-group">
+                                <label class="form-label" for="tripMonth">Mes del Viaje</label>
+                                <input type="text" id="tripMonth" class="form-input" value="junio 2025" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="paxCount">Número de Personas</label>
+                                <input type="text" id="paxCount" class="form-input" value="1 persona" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="tripInclusions">Servicios Incluidos</label>
+                            <textarea id="tripInclusions" class="form-input form-textarea" placeholder="Separar con comas">Vuelos, Hotel, Desayuno, Tours</textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-header">
+                        <div class="section-icon">3</div>
+                        <h3 class="section-title">Detalles Financieros</h3>
+                    </div>
+                    <div class="form-grid form-grid-2">
+                        <div class="form-group">
+                            <label class="form-label" for="totalTripValue">Valor Total del Viaje ($)</label>
+                            <input type="number" id="totalTripValue" class="form-input" value="3840990" min="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="amountPaid">Monto Abonado ($)</label>
+                            <input type="number" id="amountPaid" class="form-input" value="400000" min="0" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <div class="section-header">
+                        <div class="section-icon">4</div>
+                        <h3 class="section-title">Detalles del Paquete</h3>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="generalDetails">Detalles Adicionales</label>
+                        <textarea id="generalDetails" class="form-input form-textarea" placeholder="Una línea por cada detalle">Vuelos ida y vuelta desde Santiago a Barcelona/Roma a Santiago
+Hotel
+Bolso y equipaje de mano
+Desayuno incluido
+Traslados Aeropuerto/Hotel
+*Detallar itinerario*
+Traslados entre países
+Acompañados por Team Leader
+Asesoría 24 horas</textarea>
+                    </div>
+                </div>
+
+                <div class="button-group">
+                    <button type="button" class="btn btn-primary" onclick="generateReceipt()">
+                        <span class="btn-text">Generar Comprobante</span>
+                    </button>
+                    <button type="reset" class="btn btn-danger">
+                        🗑️ Limpiar Formulario
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="receipt-preview" id="receiptPreview">
+            <div class="receipt-header">
+                <div class="receipt-logo">
+                    <div class="logo-placeholder">🌍</div>
+                    <div class="company-info">
+                        <h2>Orbitravel</h2>
+                        <p>Agencia de Viajes Profesional</p>
+                    </div>
+                </div>
+                <div class="receipt-info">
+                    <h1 class="receipt-title">COMPROBANTE DE ABONO</h1>
+                    <div class="receipt-meta">
+                        <p><strong>Fecha:</strong> <span id="receiptDate"></span></p>
+                        <p><strong>N° Comprobante:</strong> <span id="receiptNumber"></span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="receipt-content">
+                <div class="receipt-section">
+                    <h3 class="receipt-section-title">📋 Datos del Cliente</h3>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Nombre:</span>
+                            <span class="info-value" id="clientNameDisplay"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Correo:</span>
+                            <span class="info-value" id="clientEmailDisplay"></span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">Dirección:</span>
+                            <span class="info-value" id="clientAddressDisplay"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="receipt-section">
+                    <h3 class="receipt-section-title">✈️ Detalles del Viaje</h3>
+                    <table class="payment-table">
+                        <thead>
+                            <tr>
+                                <th>Descripción</th>
+                                <th>Servicios Incluidos</th>
+                                <th>Valor Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>
+                                    <strong id="tripDescriptionDisplay"></strong><br>
+                                    <small id="tripMonthDisplay"></small><br>
+                                    <small id="paxCountDisplay"></small>
+                                </td>
+                                <td id="tripInclusionsDisplay"></td>
+                                <td class="amount-highlight" id="totalValueDisplay"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">Abono Realizado:</span>
+                            <span class="info-value amount-highlight" id="amountPaidDisplay"></span>
+                        </div>
+                    </div>
+
+                    <div class="balance-summary">
+                        <div class="balance-amount" id="balanceDisplay"></div>
+                        <div class="balance-label">Saldo Pendiente</div>
+                    </div>
+                </div>
+
+                <div class="receipt-section">
+                    <h3 class="receipt-section-title">📝 Detalles del Paquete</h3>
+                    <ul class="details-list" id="detailsList">
+                    </ul>
+                </div>
+
+                <div class="receipt-section">
+                    <div class="contact-info">
+                        <h3>📞 Información de Contacto - Orbitravel</h3>
+                        <p style="margin-bottom: 1rem;"><strong>¡NO DUDES EN CONSULTARNOS!</strong></p>
+                        <div class="contact-links">
+                            <a href="mailto:orbitravelviajes@gmail.com" class="contact-link">
+                                📧 orbitravelviajes@gmail.com
+                            </a>
+                            <a href="tel:+56986809215" class="contact-link">
+                                📱 +56 9 8680 9215
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="footer-note">
+                    Este es un comprobante de abono generado por Orbitravel. Documento válido para efectos de registro contable.
+                </div>
+
+                <div class="button-group">
+                    <button type="button" class="btn btn-secondary" onclick="printReceipt()">
+                        🖨️ Imprimir / Guardar PDF
+                    </button>
+                    <button type="button" class="btn btn-primary" onclick="generateNewReceipt()">
+                        ➕ Generar Nuevo
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Utility functions
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('es-CL', {
+                style: 'currency',
+                currency: 'CLP',
+                minimumFractionDigits: 0
+            }).format(value);
+        }
+
+        function formatDate(date) {
+            return new Intl.DateTimeFormat('es-ES', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            }).format(date);
+        }
+
+        function generateReceiptNumber() {
+            const prefix = 'ORB';
+            const timestamp = Date.now().toString().slice(-6);
+            const random = Math.floor(Math.random() * 100).toString().padStart(2, '0');
+            return `${prefix}-${timestamp}-${random}`;
+        }
+
+        function showLoading(button) {
+            const btnText = button.querySelector('.btn-text');
+            if (btnText) {
+                btnText.innerHTML = '<span class="loading"></span> Generando...';
+            } else {
+                const originalText = button.innerHTML;
+                button.innerHTML = '<span class="loading"></span> Generando...';
+                return originalText;
+            }
+            button.disabled = true;
+            return button.innerHTML;
+        }
+
+        function hideLoading(button, originalText) {
+            const btnText = button.querySelector('.btn-text');
+            if (btnText) {
+                btnText.innerHTML = 'Generar Comprobante';
+            } else {
+                button.innerHTML = originalText || 'Generar Comprobante';
+            }
+            button.disabled = false;
+        }
+
+        function showSuccess(button) {
+            const btnText = button.querySelector('.btn-text');
+            if (btnText) {
+                btnText.innerHTML = '<span class="success-checkmark"></span> ¡Generado!';
+                setTimeout(() => {
+                    btnText.innerHTML = 'Generar Comprobante';
+                }, 2000);
+            } else {
+                const originalText = button.innerHTML;
+                button.innerHTML = '<span class="success-checkmark"></span> ¡Generado!';
+                setTimeout(() => {
+                    button.innerHTML = originalText;
+                }, 2000);
+            }
+        }
+
+        function generateReceipt() {
+            const button = document.querySelector('.btn-primary');
+            const originalText = showLoading(button);
+
+            // Simulate processing time for better UX
+            setTimeout(() => {
+                try {
+                    // Get form values
+                    const clientName = document.getElementById('clientName').value;
+                    const clientEmail = document.getElementById('clientEmail').value || 'No especificado';
+                    const clientAddress = document.getElementById('clientAddress').value || 'No especificado';
+                    const tripDescription = document.getElementById('tripDescription').value;
+                    const tripMonth = document.getElementById('tripMonth').value;
+                    const tripInclusions = document.getElementById('tripInclusions').value;
+                    const totalTripValue = parseFloat(document.getElementById('totalTripValue').value);
+                    const amountPaid = parseFloat(document.getElementById('amountPaid').value);
+                    const paxCount = document.getElementById('paxCount').value;
+                    const generalDetails = document.getElementById('generalDetails').value;
+
+                    // Validate required fields
+                    if (!clientName || !tripDescription || !tripMonth || !paxCount || isNaN(totalTripValue) || isNaN(amountPaid)) {
+                        alert('Por favor, complete todos los campos obligatorios.');
+                        hideLoading(button, originalText);
+                        return;
+                    }
+
+                    // Calculate balance
+                    const outstandingBalance = totalTripValue - amountPaid;
+
+                    // Populate receipt
+                    document.getElementById('receiptDate').textContent = formatDate(new Date());
+                    document.getElementById('receiptNumber').textContent = generateReceiptNumber();
+
+                    document.getElementById('clientNameDisplay').textContent = clientName;
+                    document.getElementById('clientEmailDisplay').textContent = clientEmail;
+                    document.getElementById('clientAddressDisplay').textContent = clientAddress;
+
+                    document.getElementById('tripDescriptionDisplay').textContent = tripDescription;
+                    document.getElementById('tripMonthDisplay').textContent = tripMonth;
+                    document.getElementById('paxCountDisplay').textContent = paxCount;
+                    document.getElementById('tripInclusionsDisplay').textContent = tripInclusions;
+                    document.getElementById('totalValueDisplay').textContent = formatCurrency(totalTripValue);
+                    document.getElementById('amountPaidDisplay').textContent = formatCurrency(amountPaid);
+                    document.getElementById('balanceDisplay').textContent = formatCurrency(outstandingBalance);
+
+                    // Populate details list
+                    const detailsList = document.getElementById('detailsList');
+                    detailsList.innerHTML = '';
+                    
+                    if (generalDetails.trim()) {
+                        const details = generalDetails.split('\n').filter(detail => detail.trim());
+                        details.forEach(detail => {
+                            const li = document.createElement('li');
+                            li.textContent = detail.trim();
+                            detailsList.appendChild(li);
+                        });
+                    }
+
+                    // Show receipt with animation
+                    const receiptPreview = document.getElementById('receiptPreview');
+                    receiptPreview.style.display = 'block';
+                    receiptPreview.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                    hideLoading(button, originalText);
+                    showSuccess(button);
+
+                } catch (error) {
+                    console.error('Error generating receipt:', error);
+                    alert('Error al generar el comprobante. Por favor, intente nuevamente.');
+                    hideLoading(button, originalText);
+                }
+            }, 1000);
+        }
+
+        function printReceipt() {
+            window.print();
+        }
+
+        function generateNewReceipt() {
+            document.getElementById('receiptPreview').style.display = 'none';
+            document.querySelector('.form-container').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Auto-calculate balance when amounts change
+        function updateBalance() {
+            const totalValue = parseFloat(document.getElementById('totalTripValue').value) || 0;
+            const amountPaid = parseFloat(document.getElementById('amountPaid').value) || 0;
+            const balance = totalValue - amountPaid;
+            
+            // You could add a preview balance display here if needed
+        }
+
+        // Add event listeners for real-time balance calculation
+        document.getElementById('totalTripValue').addEventListener('input', updateBalance);
+        document.getElementById('amountPaid').addEventListener('input', updateBalance);
+
+        // Form validation
+        function validateForm() {
+            const requiredFields = ['clientName', 'tripDescription', 'tripMonth', 'paxCount', 'totalTripValue', 'amountPaid'];
+            let isValid = true;
+
+            requiredFields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                const value = field.value.trim();
+                
+                if (!value || (field.type === 'number' && isNaN(parseFloat(value)))) {
+                    field.style.borderColor = 'var(--danger-color)';
+                    isValid = false;
+                } else {
+                    field.style.borderColor = 'var(--border-color)';
+                }
+            });
+
+            return isValid;
+        }
+
+        // Add form validation on input
+        document.querySelectorAll('.form-input').forEach(input => {
+            input.addEventListener('blur', validateForm);
+        });
+
+        // Initialize form with default values and setup
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set current date
+            const currentDate = new Date();
+            
+            // Add smooth scrolling for all internal links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth' });
+                    }
+                });
+            });
+
+            // Add keyboard shortcuts
+            document.addEventListener('keydown', function(e) {
+                // Ctrl+Enter to generate receipt
+                if (e.ctrlKey && e.key === 'Enter') {
+                    e.preventDefault();
+                    generateReceipt();
+                }
+                
+                // Ctrl+P to print when receipt is visible
+                if (e.ctrlKey && e.key === 'p' && document.getElementById('receiptPreview').style.display === 'block') {
+                    e.preventDefault();
+                    printReceipt();
+                }
+            });
+
+            // Initialize balance calculation
+            updateBalance();
+        });
+
+        // Add currency formatting on blur for number inputs
+        document.getElementById('totalTripValue').addEventListener('blur', function() {
+            if (this.value) {
+                const value = parseFloat(this.value);
+                if (!isNaN(value)) {
+                    // You could add visual feedback here
+                }
+            }
+        });
+
+        document.getElementById('amountPaid').addEventListener('blur', function() {
+            if (this.value) {
+                const value = parseFloat(this.value);
+                if (!isNaN(value)) {
+                    // You could add visual feedback here
+                }
+            }
+        });
+
+        // Add form reset confirmation
+        document.querySelector('button[type="reset"]').addEventListener('click', function(e) {
+            if (!confirm('¿Está seguro de que desea limpiar todo el formulario?')) {
+                e.preventDefault();
+            } else {
+                // Hide receipt preview when form is reset
+                document.getElementById('receiptPreview').style.display = 'none';
+            }
+        });
+    </script>
+</body>
+</html>
