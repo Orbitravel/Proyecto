@@ -39,8 +39,9 @@
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
-            padding: 2rem 1rem;
+            padding: 2rem 1rem; /* Mantener un padding responsivo */
             color: var(--text-primary);
+            overflow-x: hidden; /* Evitar el scroll horizontal */
         }
 
         .container {
@@ -48,6 +49,7 @@
             margin: 0 auto;
             display: grid;
             gap: 2rem;
+            width: 100%; /* Asegurar que ocupe todo el ancho disponible */
         }
 
         /* Header */
@@ -235,30 +237,30 @@
             display: flex;
             flex-wrap: wrap;
             gap: 0.75rem;
-            padding: 0.5rem 1rem; /* Added padding */
+            padding: 0.5rem 1rem;
             border: 2px solid var(--border-color);
             border-radius: 12px;
             background: var(--bg-secondary);
-            max-height: 150px; /* Limit height to enable scroll if many items */
-            overflow-y: auto; /* Add scroll for overflow */
+            max-height: 150px;
+            overflow-y: auto;
         }
 
         .checkbox-group label {
             display: flex;
             align-items: center;
-            padding: 0.5rem 0.75rem; /* Adjusted padding for smaller items */
+            padding: 0.5rem 0.75rem;
             border-radius: 8px;
             cursor: pointer;
-            transition: background 0.2s ease, border-color 0.2s ease;
+            transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
             font-size: 0.9rem;
-            color: var(--text-primary);
-            border: 1px solid var(--border-color); /* Add a border for each item */
-            background-color: var(--bg-primary); /* Slightly different background */
+            color: var(--text-primary); /* Color de texto por defecto */
+            border: 1px solid var(--border-color);
+            background-color: var(--bg-primary); /* Fondo del item por defecto */
         }
 
         .checkbox-group label:hover {
             background: var(--primary-light);
-            color: white;
+            color: white; /* Color de texto en hover */
             border-color: var(--primary-color);
         }
 
@@ -267,18 +269,22 @@
             accent-color: var(--primary-color);
             transform: scale(1.1);
         }
+        
+        /* Estilos cuando el checkbox está marcado */
+        .checkbox-group input[type="checkbox"]:checked {
+            background-color: var(--primary-color); /* Fondo del checkbox marcado */
+        }
 
-        .checkbox-group input[type="checkbox"]:checked + span {
-            font-weight: 600;
-            color: var(--primary-dark);
+        /* Usamos :has() para cambiar el estilo del label padre cuando el input está checked */
+        .checkbox-group label:has(input[type="checkbox"]:checked) {
+            background: var(--primary-color); /* Fondo del item completo cuando está seleccionado */
+            border-color: var(--primary-color);
+            color: white; /* Color del texto del label cuando está seleccionado */
         }
         
-        .checkbox-group input[type="checkbox"]:checked + span {
-            color: white; /* Text color when checked */
-        }
-
-        .checkbox-group input[type="checkbox"]:checked {
-            background-color: var(--primary-color); /* Checkbox background when checked */
+        /* Asegura que el span dentro del label marcado también tenga el color blanco */
+        .checkbox-group label:has(input[type="checkbox"]:checked) span {
+            color: white; 
         }
 
         /* Person Count Selector */
@@ -329,7 +335,6 @@
             -webkit-appearance: none;
             margin: 0;
         }
-
 
         /* Buttons */
         .button-group {
@@ -537,16 +542,14 @@
             padding: 1rem;
             border-bottom: 1px solid var(--border-color);
             background: var(--bg-secondary);
-        }
-
-        .payment-table tr:last-child td {
-            border-bottom: none;
+            vertical-align: top; /* Asegurar alineación superior para contenido multilínea */
         }
 
         .amount-highlight {
             font-size: 1.25rem;
             font-weight: 700;
             color: var(--primary-color);
+            text-align: right; /* Alineación a la derecha para valores numéricos */
         }
 
         .balance-summary {
@@ -650,8 +653,11 @@
 
         /* Responsive Design */
         @media (max-width: 768px) {
+            body {
+                padding: 1rem 0.5rem; /* Ajustar el padding del body para móviles */
+            }
             .container {
-                padding: 1rem;
+                padding: 0 0.5rem; /* Asegurar que el contenedor no tenga padding extra en los lados */
             }
 
             .form-container {
@@ -682,6 +688,10 @@
 
             .contact-links {
                 flex-direction: column;
+            }
+            
+            .month-year-picker {
+                flex-direction: column; /* Stack month and year on smaller screens */
             }
         }
 
@@ -845,7 +855,7 @@
                             <label class="form-label">Servicios Incluidos</label>
                             <div class="checkbox-group" id="tripInclusionsCheckboxes">
                                 </div>
-                            <textarea id="tripInclusionsTextarea" class="form-input form-textarea" placeholder="¿Algún otro servicio? Ej: Seguro adicional, Actividades especiales..." style="margin-top: 10px;"></textarea>
+                            <textarea id="tripInclusionsTextarea" class="form-input form-textarea" placeholder="¿Algún otro servicio? (Ingrese uno por línea)&#10;Ej: Seguro adicional&#10;Actividades especiales"></textarea>
                         </div>
                     </div>
                 </div>
@@ -874,11 +884,7 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="generalDetails">Detalles Adicionales</label>
-                        <textarea id="generalDetails" class="form-input form-textarea" placeholder="Ingrese cada detalle en una línea nueva. Ej:
-- Vuelos ida y vuelta desde Santiago
-- Alojamiento en hotel 4 estrellas
-- Desayuno diario
-- Tour guiado por la ciudad"></textarea>
+                        <textarea id="generalDetails" class="form-input form-textarea" placeholder="Ingrese cada detalle en una línea nueva. Ej:&#10;- Vuelos ida y vuelta desde Santiago&#10;- Alojamiento en hotel 4 estrellas&#10;- Desayuno diario&#10;- Tour guiado por la ciudad"></textarea>
                     </div>
                 </div>
 
@@ -898,8 +904,8 @@
                 <div class="receipt-logo">
                     <img src="https://i.ibb.co/JFHXxf05/background-2024-12-04-T163344-246-qy0zclcm92eazaz55762mr5yc2s9206sni10ci9gxs.webp" alt="Orbitravel Logo Completo">
                     <div class="company-info">
-                        <h2></h2>
-                        <p></p>
+                        <h2>Orbitravel</h2>
+                        <p>Tu próxima aventura comienza aquí</p>
                     </div>
                 </div>
                 <div class="receipt-info">
@@ -1070,6 +1076,8 @@
 
             commonInclusions.forEach(inclusion => {
                 const label = document.createElement('label');
+                label.htmlFor = `service-${inclusion.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, '')}`; // Set htmlFor for accessibility
+                
                 const checkbox = document.createElement('input');
                 checkbox.type = 'checkbox';
                 checkbox.name = 'serviceIncluded';
@@ -1092,6 +1100,7 @@
             });
             const customText = document.getElementById('tripInclusionsTextarea').value.trim();
             if (customText) {
+                // Split by new line, filter empty lines, trim each item
                 selected.push(...customText.split('\n').map(item => item.trim()).filter(item => item !== ''));
             }
             return selected.join(', ');
@@ -1140,8 +1149,8 @@
                 try {
                     // Get form values
                     const clientName = document.getElementById('clientName').value.trim();
-                    const clientEmail = document.getElementById('clientEmail').value.trim() || 'No especificado';
-                    const clientAddress = document.getElementById('clientAddress').value.trim() || 'No especificado';
+                    const clientEmail = document.getElementById('clientEmail').value.trim();
+                    const clientAddress = document.getElementById('clientAddress').value.trim();
                     const tripDescription = document.getElementById('tripDescription').value.trim();
                     const tripMonth = document.getElementById('tripMonth').value;
                     const tripYear = document.getElementById('tripYear').value;
@@ -1174,7 +1183,7 @@
                     }
 
                     if (!isValid) {
-                        alert('Por favor, complete todos los campos obligatorios marcados.');
+                        alert('Por favor, complete todos los campos obligatorios marcados en rojo.');
                         hideLoading(button);
                         return;
                     }
@@ -1186,9 +1195,9 @@
                     document.getElementById('receiptDate').textContent = formatDate(new Date());
                     document.getElementById('receiptNumber').textContent = generateReceiptNumber();
 
-                    document.getElementById('clientNameDisplay').textContent = clientName;
-                    document.getElementById('clientEmailDisplay').textContent = clientEmail;
-                    document.getElementById('clientAddressDisplay').textContent = clientAddress;
+                    document.getElementById('clientNameDisplay').textContent = clientName || 'No especificado';
+                    document.getElementById('clientEmailDisplay').textContent = clientEmail || 'No especificado';
+                    document.getElementById('clientAddressDisplay').textContent = clientAddress || 'No especificado';
 
                     document.getElementById('tripDescriptionDisplay').textContent = tripDescription;
                     document.getElementById('tripMonthYearDisplay').textContent = `${tripMonth} ${tripYear}`;
@@ -1220,7 +1229,14 @@
                             li.textContent = detail.trim();
                             detailsList.appendChild(li);
                         });
+                    } else {
+                        const li = document.createElement('li');
+                        li.textContent = 'No se han especificado detalles adicionales.';
+                        li.style.paddingLeft = '0'; /* Remove checkmark for this default message */
+                        li.style.color = 'var(--text-secondary)';
+                        detailsList.appendChild(li);
                     }
+
 
                     // Show receipt with animation
                     const receiptPreview = document.getElementById('receiptPreview');
@@ -1249,10 +1265,7 @@
 
             // Manually reset values that aren't handled by form.reset() or have specific defaults
             document.getElementById('paxCount').value = '1';
-            document.getElementById('tripMonth').value = ''; // Reset month dropdown
-            document.getElementById('tripYear').value = ''; // Reset year dropdown
-            populateYears(); // Re-populate years to select current year by default
-
+            
             // Deselect all checkboxes and clear custom text
             document.querySelectorAll('#tripInclusionsCheckboxes input[type="checkbox"]').forEach(checkbox => {
                 checkbox.checked = false;
@@ -1260,9 +1273,14 @@
             document.getElementById('tripInclusionsTextarea').value = '';
 
             // Reset border colors
-            document.querySelectorAll('.form-input, .form-select').forEach(input => {
+            document.querySelectorAll('.form-input, .form-select, .form-textarea').forEach(input => {
                 input.style.borderColor = 'var(--border-color)';
             });
+
+            // Re-populate and set default month/year
+            populateYears();
+            const currentMonthIndex = new Date().getMonth(); 
+            document.getElementById('tripMonth').options[currentMonthIndex + 1].selected = true; // Set current month
         }
 
         // Form validation feedback on blur
@@ -1296,7 +1314,8 @@
                 // Manual resets after form.reset()
                 document.getElementById('paxCount').value = '1';
                 populateYears(); // Re-populate years to set current year as default
-                document.getElementById('tripMonth').value = ''; // Ensure month is reset
+                const currentMonthIndex = new Date().getMonth(); 
+                document.getElementById('tripMonth').options[currentMonthIndex + 1].selected = true; // Set current month
             }
         });
 
@@ -1311,20 +1330,6 @@
 
             // Set default pax count
             document.getElementById('paxCount').value = '1';
-
-            // Set placeholder values if input fields are empty
-            document.getElementById('clientName').placeholder = 'Ej: Juan Pérez González';
-            document.getElementById('clientEmail').placeholder = 'Ej: juan.perez@email.com';
-            document.getElementById('clientAddress').placeholder = 'Ej: Av. Principal 123, Viña del Mar, Chile';
-            document.getElementById('tripDescription').placeholder = 'Ej: Viaje a la Patagonia Austral | Luna de miel a Bora Bora';
-            document.getElementById('totalTripValue').placeholder = 'Ej: 3500000';
-            document.getElementById('amountPaid').placeholder = 'Ej: 500000';
-            document.getElementById('generalDetails').placeholder = `Ingrese cada detalle en una línea nueva. Ej:
-- Vuelos ida y vuelta desde Santiago
-- Alojamiento en hotel 4 estrellas
-- Desayuno diario
-- Tour guiado por la ciudad`;
-            document.getElementById('tripInclusionsTextarea').placeholder = '¿Algún otro servicio? Ej: Seguro adicional, Actividades especiales...';
 
             // Add keyboard shortcuts
             document.addEventListener('keydown', function(e) {
