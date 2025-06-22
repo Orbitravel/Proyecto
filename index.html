@@ -4,15 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generador de Comprobantes de Abono - Orbitravel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
         :root {
             --primary-color: #2563eb;
             --primary-light: #3b82f6;
@@ -36,6 +29,12 @@
             --gradient-accent: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
         }
 
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -56,6 +55,20 @@
             text-align: center;
             color: white;
             margin-bottom: 2rem;
+        }
+
+        .header .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .header .logo-container img {
+            max-height: 80px; /* Adjust size as needed */
+            width: auto;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+            object-fit: contain; /* Ensure the image fits within its container without cropping */
         }
 
         .header h1 {
@@ -154,7 +167,7 @@
             font-size: 0.875rem;
         }
 
-        .form-input {
+        .form-input, .form-select, .form-textarea {
             width: 100%;
             padding: 0.75rem 1rem;
             border: 2px solid var(--border-color);
@@ -162,9 +175,17 @@
             font-size: 1rem;
             transition: all 0.3s ease;
             background: var(--bg-secondary);
+            color: var(--text-primary);
         }
 
-        .form-input:focus {
+        /* Placeholder styling for transparent examples */
+        .form-input::placeholder, .form-textarea::placeholder {
+            color: var(--text-secondary);
+            opacity: 0.7; /* Make placeholders more transparent */
+            font-style: italic;
+        }
+
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
             outline: none;
             border-color: var(--primary-color);
             box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
@@ -176,6 +197,139 @@
             resize: vertical;
             font-family: inherit;
         }
+
+        /* Calendar Dropdown Styling */
+        .month-year-picker {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .month-year-picker select {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            -webkit-appearance: none; /* Remove default arrow on select */
+            -moz-appearance: none;
+            appearance: none;
+            background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%236b7280%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13.2-6.4H18.6c-5%200-9.3%201.8-12.9%205.5-3.6%203.7-5.4%208.5-5.4%2014.2%200%204.6%201.8%208.6%205.5%2012.2l128.9%20127.8c3.6%203.5%207.7%205.3%2012.3%205.3s8.7-1.8%2012.3-5.3l128.9-127.8c3.7-3.6%205.5-7.6%205.5-12.2.1-5.7-1.7-10.5-5.3-14.2z%22%2F%3E%3C%2Fsvg%3E');
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 0.8em;
+            padding-right: 2.5rem; /* Make space for the arrow */
+        }
+
+        .month-year-picker select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            transform: translateY(-1px);
+        }
+
+        /* Services Included Checkboxes */
+        .checkbox-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            padding: 0.5rem 1rem; /* Added padding */
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            background: var(--bg-secondary);
+            max-height: 150px; /* Limit height to enable scroll if many items */
+            overflow-y: auto; /* Add scroll for overflow */
+        }
+
+        .checkbox-group label {
+            display: flex;
+            align-items: center;
+            padding: 0.5rem 0.75rem; /* Adjusted padding for smaller items */
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s ease, border-color 0.2s ease;
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            border: 1px solid var(--border-color); /* Add a border for each item */
+            background-color: var(--bg-primary); /* Slightly different background */
+        }
+
+        .checkbox-group label:hover {
+            background: var(--primary-light);
+            color: white;
+            border-color: var(--primary-color);
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 0.5rem;
+            accent-color: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        .checkbox-group input[type="checkbox"]:checked + span {
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+        
+        .checkbox-group input[type="checkbox"]:checked + span {
+            color: white; /* Text color when checked */
+        }
+
+        .checkbox-group input[type="checkbox"]:checked {
+            background-color: var(--primary-color); /* Checkbox background when checked */
+        }
+
+        /* Person Count Selector */
+        .person-count-selector {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            border: 2px solid var(--border-color);
+            border-radius: 12px;
+            padding: 0.5rem 1rem;
+            background: var(--bg-secondary);
+            transition: all 0.3s ease;
+        }
+        .person-count-selector:focus-within {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+            transform: translateY(-1px);
+        }
+
+        .person-count-selector button {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            cursor: pointer;
+            padding: 0 0.5rem;
+            transition: transform 0.2s ease;
+        }
+
+        .person-count-selector button:hover {
+            transform: scale(1.1);
+        }
+
+        .person-count-selector input[type="number"] {
+            flex-grow: 1;
+            text-align: center;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 1rem;
+            color: var(--text-primary);
+            -moz-appearance: textfield; /* Firefox */
+            appearance: textfield; /* Chrome, Safari, Edge */
+        }
+
+        .person-count-selector input::-webkit-outer-spin-button,
+        .person-count-selector input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
 
         /* Buttons */
         .button-group {
@@ -289,16 +443,10 @@
             gap: 1rem;
         }
 
-        .logo-placeholder {
-            width: 60px;
-            height: 60px;
-            background: rgba(255,255,255,0.2);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 700;
-            font-size: 1.5rem;
+        .receipt-logo img {
+            max-height: 70px; /* Adjust size for receipt logo */
+            width: auto;
+            object-fit: contain;
         }
 
         .company-info h2 {
@@ -402,12 +550,24 @@
         }
 
         .balance-summary {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%); /* Highlight in red for pending */
             color: white;
             padding: 1.5rem;
             border-radius: 12px;
             margin-top: 1rem;
             text-align: center;
+            box-shadow: var(--shadow-md);
+            animation: pulseRed 1.5s infinite alternate; /* Dynamic pulse animation */
+        }
+
+        .balance-summary.paid-in-full {
+            background: var(--success-color); /* Green if 0 balance */
+            animation: none; /* No pulse if paid in full */
+        }
+
+        @keyframes pulseRed {
+            from { transform: scale(1); opacity: 1; }
+            to { transform: scale(1.02); opacity: 0.9; }
         }
 
         .balance-amount {
@@ -556,6 +716,16 @@
                 -webkit-print-color-adjust: exact;
                 color-adjust: exact;
             }
+
+            .balance-summary {
+                background: linear-gradient(135deg, #ff6b6b 0%, #ee5a52 100%) !important;
+                -webkit-print-color-adjust: exact;
+                color-adjust: exact;
+                animation: none; /* Disable animation for print */
+            }
+            .balance-summary.paid-in-full {
+                background: var(--success-color) !important;
+            }
         }
 
         /* Loading Animation */
@@ -598,7 +768,9 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>🌍 ORBITRAVEL</h1>
+            <div class="logo-container">
+                <img src="https://i.ibb.co/JFHXxf05/background-2024-12-04-T163344-246-qy0zclcm92eazaz55762mr5yc2s9206sni10ci9gxs.webp" alt="Orbitravel Logo Completo">
+            </div>
             <p>Generador de Comprobantes de Abono</p>
         </div>
 
@@ -613,16 +785,16 @@
                     <div class="form-grid form-grid-2">
                         <div class="form-group">
                             <label class="form-label" for="clientName">Nombre Completo</label>
-                            <input type="text" id="clientName" class="form-input" placeholder="Mery Alvarado">
+                            <input type="text" id="clientName" class="form-input" placeholder="Ej: Juan Pérez González" required>
                         </div>
                         <div class="form-group">
                             <label class="form-label" for="clientEmail">Correo Electrónico</label>
-                            <input type="email" id="clientEmail" class="form-input" placeholder="cliente@email.com">
+                            <input type="email" id="clientEmail" class="form-input" placeholder="Ej: juan.perez@email.com">
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="clientAddress">Dirección</label>
-                        <input type="text" id="clientAddress" class="form-input" placeholder="Dirección del cliente">
+                        <input type="text" id="clientAddress" class="form-input" placeholder="Ej: Av. Principal 123, Viña del Mar, Chile">
                     </div>
                 </div>
 
@@ -634,21 +806,46 @@
                     <div class="form-grid">
                         <div class="form-group">
                             <label class="form-label" for="tripDescription">Descripción del Viaje</label>
-                            <input type="text" id="tripDescription" class="form-input" value="Viaje grupal Encanto Europeo" required>
+                            <input type="text" id="tripDescription" class="form-input" placeholder="Ej: Viaje a la Patagonia Austral | Luna de miel a Bora Bora" required>
                         </div>
                         <div class="form-grid form-grid-2">
                             <div class="form-group">
-                                <label class="form-label" for="tripMonth">Mes del Viaje</label>
-                                <input type="text" id="tripMonth" class="form-input" value="junio 2025" required>
+                                <label class="form-label" for="tripMonthYear">Mes del Viaje</label>
+                                <div class="month-year-picker">
+                                    <select id="tripMonth" class="form-select" required>
+                                        <option value="">Seleccione Mes</option>
+                                        <option value="Enero">Enero</option>
+                                        <option value="Febrero">Febrero</option>
+                                        <option value="Marzo">Marzo</option>
+                                        <option value="Abril">Abril</option>
+                                        <option value="Mayo">Mayo</option>
+                                        <option value="Junio">Junio</option>
+                                        <option value="Julio">Julio</option>
+                                        <option value="Agosto">Agosto</option>
+                                        <option value="Septiembre">Septiembre</option>
+                                        <option value="Octubre">Octubre</option>
+                                        <option value="Noviembre">Noviembre</option>
+                                        <option value="Diciembre">Diciembre</option>
+                                    </select>
+                                    <select id="tripYear" class="form-select" required>
+                                        <option value="">Seleccione Año</option>
+                                        </select>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label class="form-label" for="paxCount">Número de Personas</label>
-                                <input type="text" id="paxCount" class="form-input" value="1 persona" required>
+                                <div class="person-count-selector">
+                                    <button type="button" onclick="changePaxCount(-1)">-</button>
+                                    <input type="number" id="paxCount" class="form-input" value="1" min="1" required readonly>
+                                    <button type="button" onclick="changePaxCount(1)">+</button>
+                                </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="tripInclusions">Servicios Incluidos</label>
-                            <textarea id="tripInclusions" class="form-input form-textarea" placeholder="Separar con comas">Vuelos, Hotel, Desayuno, Tours</textarea>
+                            <label class="form-label">Servicios Incluidos</label>
+                            <div class="checkbox-group" id="tripInclusionsCheckboxes">
+                                </div>
+                            <textarea id="tripInclusionsTextarea" class="form-input form-textarea" placeholder="¿Algún otro servicio? Ej: Seguro adicional, Actividades especiales..." style="margin-top: 10px;"></textarea>
                         </div>
                     </div>
                 </div>
@@ -660,12 +857,12 @@
                     </div>
                     <div class="form-grid form-grid-2">
                         <div class="form-group">
-                            <label class="form-label" for="totalTripValue">Valor Total del Viaje ($)</label>
-                            <input type="number" id="totalTripValue" class="form-input" value="3840990" min="0" required>
+                            <label class="form-label" for="totalTripValue">Valor Total del Viaje (CLP)</label>
+                            <input type="number" id="totalTripValue" class="form-input" placeholder="Ej: 3500000" min="0" required>
                         </div>
                         <div class="form-group">
-                            <label class="form-label" for="amountPaid">Monto Abonado ($)</label>
-                            <input type="number" id="amountPaid" class="form-input" value="400000" min="0" required>
+                            <label class="form-label" for="amountPaid">Monto Abonado (CLP)</label>
+                            <input type="number" id="amountPaid" class="form-input" placeholder="Ej: 500000" min="0" required>
                         </div>
                     </div>
                 </div>
@@ -677,21 +874,17 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="generalDetails">Detalles Adicionales</label>
-                        <textarea id="generalDetails" class="form-input form-textarea" placeholder="Una línea por cada detalle">Vuelos ida y vuelta desde Santiago a Barcelona/Roma a Santiago
-Hotel
-Bolso y equipaje de mano
-Desayuno incluido
-Traslados Aeropuerto/Hotel
-*Detallar itinerario*
-Traslados entre países
-Acompañados por Team Leader
-Asesoría 24 horas</textarea>
+                        <textarea id="generalDetails" class="form-input form-textarea" placeholder="Ingrese cada detalle en una línea nueva. Ej:
+- Vuelos ida y vuelta desde Santiago
+- Alojamiento en hotel 4 estrellas
+- Desayuno diario
+- Tour guiado por la ciudad"></textarea>
                     </div>
                 </div>
 
                 <div class="button-group">
-                    <button type="button" class="btn btn-primary" onclick="generateReceipt()">
-                        <span class="btn-text">Generar Comprobante</span>
+                    <button type="submit" class="btn btn-primary">
+                        <span class="btn-text">✨ Generar Comprobante</span>
                     </button>
                     <button type="reset" class="btn btn-danger">
                         🗑️ Limpiar Formulario
@@ -703,14 +896,14 @@ Asesoría 24 horas</textarea>
         <div class="receipt-preview" id="receiptPreview">
             <div class="receipt-header">
                 <div class="receipt-logo">
-                    <div class="logo-placeholder">🌍</div>
+                    <img src="https://i.ibb.co/JFHXxf05/background-2024-12-04-T163344-246-qy0zclcm92eazaz55762mr5yc2s9206sni10ci9gxs.webp" alt="Orbitravel Logo Completo">
                     <div class="company-info">
-                        <h2>Orbitravel</h2>
-                        <p>Agencia de Viajes Profesional</p>
+                        <h2></h2>
+                        <p></p>
                     </div>
                 </div>
                 <div class="receipt-info">
-                    <h1 class="receipt-title">COMPROBANTE DE ABONO</h1>
+                    <h1 class="receipt-title">BOLETA DE ABONO</h1>
                     <div class="receipt-meta">
                         <p><strong>Fecha:</strong> <span id="receiptDate"></span></p>
                         <p><strong>N° Comprobante:</strong> <span id="receiptNumber"></span></p>
@@ -742,7 +935,7 @@ Asesoría 24 horas</textarea>
                     <table class="payment-table">
                         <thead>
                             <tr>
-                                <th>Descripción</th>
+                                <th>Descripción del Viaje</th>
                                 <th>Servicios Incluidos</th>
                                 <th>Valor Total</th>
                             </tr>
@@ -751,8 +944,8 @@ Asesoría 24 horas</textarea>
                             <tr>
                                 <td>
                                     <strong id="tripDescriptionDisplay"></strong><br>
-                                    <small id="tripMonthDisplay"></small><br>
-                                    <small id="paxCountDisplay"></small>
+                                    <small>Mes del Viaje: <span id="tripMonthYearDisplay"></span></small><br>
+                                    <small>Pasajeros: <span id="paxCountDisplay"></span></small>
                                 </td>
                                 <td id="tripInclusionsDisplay"></td>
                                 <td class="amount-highlight" id="totalValueDisplay"></td>
@@ -767,7 +960,7 @@ Asesoría 24 horas</textarea>
                         </div>
                     </div>
 
-                    <div class="balance-summary">
+                    <div class="balance-summary" id="balanceSummarySection">
                         <div class="balance-amount" id="balanceDisplay"></div>
                         <div class="balance-label">Saldo Pendiente</div>
                     </div>
@@ -782,7 +975,7 @@ Asesoría 24 horas</textarea>
                 <div class="receipt-section">
                     <div class="contact-info">
                         <h3>📞 Información de Contacto - Orbitravel</h3>
-                        <p style="margin-bottom: 1rem;"><strong>¡NO DUDES EN CONSULTARNOS!</strong></p>
+                        <p style="margin-bottom: 1rem;"><strong>¡Planifica tu próxima aventura con nosotros!</strong></p>
                         <div class="contact-links">
                             <a href="mailto:orbitravelviajes@gmail.com" class="contact-link">
                                 📧 orbitravelviajes@gmail.com
@@ -790,12 +983,15 @@ Asesoría 24 horas</textarea>
                             <a href="tel:+56986809215" class="contact-link">
                                 📱 +56 9 8680 9215
                             </a>
+                            <a href="https://www.instagram.com/orbitravel.cl/" target="_blank" class="contact-link">
+                                📸 Instagram/orbitravel.cl
+                            </a>
                         </div>
                     </div>
                 </div>
 
                 <div class="footer-note">
-                    Este es un comprobante de abono generado por Orbitravel. Documento válido para efectos de registro contable.
+                    Este es un comprobante de abono generado por Orbitravel. Documento válido para efectos de registro contable. ¡Gracias por confiar en nosotros!
                 </div>
 
                 <div class="button-group">
@@ -839,21 +1035,14 @@ Asesoría 24 horas</textarea>
             const btnText = button.querySelector('.btn-text');
             if (btnText) {
                 btnText.innerHTML = '<span class="loading"></span> Generando...';
-            } else {
-                const originalText = button.innerHTML;
-                button.innerHTML = '<span class="loading"></span> Generando...';
-                return originalText;
             }
             button.disabled = true;
-            return button.innerHTML;
         }
 
-        function hideLoading(button, originalText) {
+        function hideLoading(button) {
             const btnText = button.querySelector('.btn-text');
             if (btnText) {
-                btnText.innerHTML = 'Generar Comprobante';
-            } else {
-                button.innerHTML = originalText || 'Generar Comprobante';
+                btnText.innerHTML = '✨ Generar Comprobante';
             }
             button.disabled = false;
         }
@@ -863,40 +1052,130 @@ Asesoría 24 horas</textarea>
             if (btnText) {
                 btnText.innerHTML = '<span class="success-checkmark"></span> ¡Generado!';
                 setTimeout(() => {
-                    btnText.innerHTML = 'Generar Comprobante';
-                }, 2000);
-            } else {
-                const originalText = button.innerHTML;
-                button.innerHTML = '<span class="success-checkmark"></span> ¡Generado!';
-                setTimeout(() => {
-                    button.innerHTML = originalText;
+                    btnText.innerHTML = '✨ Generar Comprobante';
                 }, 2000);
             }
         }
 
-        function generateReceipt() {
+        // --- Servicios Incluidos ---
+        const commonInclusions = [
+            "Vuelos", "Alojamiento", "Desayuno", "Almuerzo", "Cena", "Traslados Aeropuerto", "Traslados Inter-país",
+            "Tours Guiados", "Seguro de Viaje", "Asistencia 24/7", "Entradas a Atracciones", "Guía Bilingüe",
+            "Maleta de Bodega", "Maleta de Cabina", "Impuestos Aéreos"
+        ];
+
+        function populateInclusionsCheckboxes() {
+            const container = document.getElementById('tripInclusionsCheckboxes');
+            container.innerHTML = ''; // Clear previous content
+
+            commonInclusions.forEach(inclusion => {
+                const label = document.createElement('label');
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.name = 'serviceIncluded';
+                checkbox.value = inclusion;
+                checkbox.id = `service-${inclusion.replace(/\s+/g, '-').replace(/[^a-zA-Z0-9-]/g, '')}`; // Sanitize ID
+
+                const span = document.createElement('span');
+                span.textContent = inclusion;
+
+                label.appendChild(checkbox);
+                label.appendChild(span);
+                container.appendChild(label);
+            });
+        }
+
+        function getSelectedInclusions() {
+            const selected = [];
+            document.querySelectorAll('#tripInclusionsCheckboxes input[type="checkbox"]:checked').forEach(checkbox => {
+                selected.push(checkbox.value);
+            });
+            const customText = document.getElementById('tripInclusionsTextarea').value.trim();
+            if (customText) {
+                selected.push(...customText.split('\n').map(item => item.trim()).filter(item => item !== ''));
+            }
+            return selected.join(', ');
+        }
+
+        // --- Selector de Mes y Año ---
+        function populateYears() {
+            const tripYearSelect = document.getElementById('tripYear');
+            const currentYear = new Date().getFullYear();
+            // Clear existing options, except the placeholder
+            tripYearSelect.innerHTML = '<option value="">Seleccione Año</option>'; 
+            for (let i = currentYear; i <= currentYear + 5; i++) { // From current year to 5 years in future
+                const option = document.createElement('option');
+                option.value = i;
+                option.textContent = i;
+                if (i === currentYear) { // Set current year as default
+                    option.selected = true;
+                }
+                tripYearSelect.appendChild(option);
+            }
+        }
+
+        // --- Selector de Cantidad de Personas ---
+        function changePaxCount(delta) {
+            const paxInput = document.getElementById('paxCount');
+            let currentCount = parseInt(paxInput.value) || 0;
+            currentCount += delta;
+            if (currentCount < 1) { // Ensure minimum is 1
+                currentCount = 1;
+            }
+            paxInput.value = currentCount;
+            // Trigger validation to remove red border if it was invalid
+            const event = new Event('blur');
+            paxInput.dispatchEvent(event);
+        }
+
+        // --- Lógica Principal del Generador de Comprobantes ---
+        document.getElementById('receiptForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent default form submission
+
             const button = document.querySelector('.btn-primary');
-            const originalText = showLoading(button);
+            showLoading(button);
 
             // Simulate processing time for better UX
             setTimeout(() => {
                 try {
                     // Get form values
-                    const clientName = document.getElementById('clientName').value;
-                    const clientEmail = document.getElementById('clientEmail').value || 'No especificado';
-                    const clientAddress = document.getElementById('clientAddress').value || 'No especificado';
-                    const tripDescription = document.getElementById('tripDescription').value;
+                    const clientName = document.getElementById('clientName').value.trim();
+                    const clientEmail = document.getElementById('clientEmail').value.trim() || 'No especificado';
+                    const clientAddress = document.getElementById('clientAddress').value.trim() || 'No especificado';
+                    const tripDescription = document.getElementById('tripDescription').value.trim();
                     const tripMonth = document.getElementById('tripMonth').value;
-                    const tripInclusions = document.getElementById('tripInclusions').value;
+                    const tripYear = document.getElementById('tripYear').value;
+                    const paxCount = parseInt(document.getElementById('paxCount').value);
                     const totalTripValue = parseFloat(document.getElementById('totalTripValue').value);
                     const amountPaid = parseFloat(document.getElementById('amountPaid').value);
-                    const paxCount = document.getElementById('paxCount').value;
                     const generalDetails = document.getElementById('generalDetails').value;
+                    const selectedInclusions = getSelectedInclusions();
 
-                    // Validate required fields
-                    if (!clientName || !tripDescription || !tripMonth || !paxCount || isNaN(totalTripValue) || isNaN(amountPaid)) {
-                        alert('Por favor, complete todos los campos obligatorios.');
-                        hideLoading(button, originalText);
+                    // Basic validation for required fields
+                    let isValid = true;
+                    const requiredFields = [
+                        {id: 'clientName', name: 'Nombre del Cliente'},
+                        {id: 'tripDescription', name: 'Descripción del Viaje'},
+                        {id: 'tripMonth', name: 'Mes del Viaje'},
+                        {id: 'tripYear', name: 'Año del Viaje'},
+                        {id: 'paxCount', name: 'Número de Personas'},
+                        {id: 'totalTripValue', name: 'Valor Total del Viaje'},
+                        {id: 'amountPaid', name: 'Monto Abonado'}
+                    ];
+
+                    for (const field of requiredFields) {
+                        const inputElement = document.getElementById(field.id);
+                        if (!inputElement.value.trim() || (inputElement.type === 'number' && isNaN(parseFloat(inputElement.value)))) {
+                            inputElement.style.borderColor = 'var(--danger-color)';
+                            isValid = false;
+                        } else {
+                            inputElement.style.borderColor = 'var(--border-color)';
+                        }
+                    }
+
+                    if (!isValid) {
+                        alert('Por favor, complete todos los campos obligatorios marcados.');
+                        hideLoading(button);
                         return;
                     }
 
@@ -912,12 +1191,23 @@ Asesoría 24 horas</textarea>
                     document.getElementById('clientAddressDisplay').textContent = clientAddress;
 
                     document.getElementById('tripDescriptionDisplay').textContent = tripDescription;
-                    document.getElementById('tripMonthDisplay').textContent = tripMonth;
-                    document.getElementById('paxCountDisplay').textContent = paxCount;
-                    document.getElementById('tripInclusionsDisplay').textContent = tripInclusions;
+                    document.getElementById('tripMonthYearDisplay').textContent = `${tripMonth} ${tripYear}`;
+                    document.getElementById('paxCountDisplay').textContent = `${paxCount} persona${paxCount !== 1 ? 's' : ''}`;
+                    document.getElementById('tripInclusionsDisplay').textContent = selectedInclusions || 'No especificado';
                     document.getElementById('totalValueDisplay').textContent = formatCurrency(totalTripValue);
                     document.getElementById('amountPaidDisplay').textContent = formatCurrency(amountPaid);
-                    document.getElementById('balanceDisplay').textContent = formatCurrency(outstandingBalance);
+                    
+                    const balanceDisplayElement = document.getElementById('balanceDisplay');
+                    const balanceSummarySection = document.getElementById('balanceSummarySection');
+                    balanceDisplayElement.textContent = formatCurrency(outstandingBalance);
+                    
+                    if (outstandingBalance > 0) {
+                        balanceSummarySection.classList.remove('paid-in-full');
+                        balanceSummarySection.classList.add('balance-summary');
+                    } else {
+                        balanceSummarySection.classList.remove('balance-summary');
+                        balanceSummarySection.classList.add('paid-in-full');
+                    }
 
                     // Populate details list
                     const detailsList = document.getElementById('detailsList');
@@ -937,16 +1227,16 @@ Asesoría 24 horas</textarea>
                     receiptPreview.style.display = 'block';
                     receiptPreview.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-                    hideLoading(button, originalText);
+                    hideLoading(button);
                     showSuccess(button);
 
                 } catch (error) {
-                    console.error('Error generating receipt:', error);
-                    alert('Error al generar el comprobante. Por favor, intente nuevamente.');
-                    hideLoading(button, originalText);
+                    console.error('Error al generar el comprobante:', error);
+                    alert('Error inesperado al generar el comprobante. Por favor, revise los datos e intente nuevamente.');
+                    hideLoading(button);
                 }
             }, 1000);
-        }
+        });
 
         function printReceipt() {
             window.print();
@@ -955,68 +1245,93 @@ Asesoría 24 horas</textarea>
         function generateNewReceipt() {
             document.getElementById('receiptPreview').style.display = 'none';
             document.querySelector('.form-container').scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('receiptForm').reset(); // Reset the form fields
+
+            // Manually reset values that aren't handled by form.reset() or have specific defaults
+            document.getElementById('paxCount').value = '1';
+            document.getElementById('tripMonth').value = ''; // Reset month dropdown
+            document.getElementById('tripYear').value = ''; // Reset year dropdown
+            populateYears(); // Re-populate years to select current year by default
+
+            // Deselect all checkboxes and clear custom text
+            document.querySelectorAll('#tripInclusionsCheckboxes input[type="checkbox"]').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            document.getElementById('tripInclusionsTextarea').value = '';
+
+            // Reset border colors
+            document.querySelectorAll('.form-input, .form-select').forEach(input => {
+                input.style.borderColor = 'var(--border-color)';
+            });
         }
 
-        // Auto-calculate balance when amounts change
-        function updateBalance() {
-            const totalValue = parseFloat(document.getElementById('totalTripValue').value) || 0;
-            const amountPaid = parseFloat(document.getElementById('amountPaid').value) || 0;
-            const balance = totalValue - amountPaid;
-            
-            // You could add a preview balance display here if needed
-        }
-
-        // Add event listeners for real-time balance calculation
-        document.getElementById('totalTripValue').addEventListener('input', updateBalance);
-        document.getElementById('amountPaid').addEventListener('input', updateBalance);
-
-        // Form validation
-        function validateForm() {
-            const requiredFields = ['clientName', 'tripDescription', 'tripMonth', 'paxCount', 'totalTripValue', 'amountPaid'];
-            let isValid = true;
-
-            requiredFields.forEach(fieldId => {
-                const field = document.getElementById(fieldId);
-                const value = field.value.trim();
+        // Form validation feedback on blur
+        document.querySelectorAll('.form-input, .form-select, .form-textarea').forEach(input => {
+            input.addEventListener('blur', function() {
+                // For number inputs, check if it's a valid number and non-negative
+                if (this.type === 'number') {
+                    const value = parseFloat(this.value);
+                    if (isNaN(value) || value < 0) {
+                        this.style.borderColor = 'var(--danger-color)';
+                        return; // Exit if invalid number
+                    }
+                }
                 
-                if (!value || (field.type === 'number' && isNaN(parseFloat(value)))) {
-                    field.style.borderColor = 'var(--danger-color)';
-                    isValid = false;
+                // For other inputs, just check if empty (if required)
+                if (this.hasAttribute('required') && this.value.trim() === '') {
+                    this.style.borderColor = 'var(--danger-color)';
                 } else {
-                    field.style.borderColor = 'var(--border-color)';
+                    this.style.borderColor = 'var(--border-color)';
                 }
             });
-
-            return isValid;
-        }
-
-        // Add form validation on input
-        document.querySelectorAll('.form-input').forEach(input => {
-            input.addEventListener('blur', validateForm);
         });
 
-        // Initialize form with default values and setup
+        // Add form reset confirmation
+        document.querySelector('button[type="reset"]').addEventListener('click', function(e) {
+            if (!confirm('¿Está seguro de que desea limpiar todo el formulario? Se perderán los datos ingresados.')) {
+                e.preventDefault();
+            } else {
+                // Hide receipt preview when form is reset
+                document.getElementById('receiptPreview').style.display = 'none';
+                // Manual resets after form.reset()
+                document.getElementById('paxCount').value = '1';
+                populateYears(); // Re-populate years to set current year as default
+                document.getElementById('tripMonth').value = ''; // Ensure month is reset
+            }
+        });
+
+        // Initialize form elements on page load
         document.addEventListener('DOMContentLoaded', function() {
-            // Set current date
-            const currentDate = new Date();
-            
-            // Add smooth scrolling for all internal links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({ behavior: 'smooth' });
-                    }
-                });
-            });
+            populateYears();
+            populateInclusionsCheckboxes();
+
+            // Set current month as default in dropdown for convenience
+            const currentMonthIndex = new Date().getMonth(); // 0 for Jan, 11 for Dec
+            document.getElementById('tripMonth').options[currentMonthIndex + 1].selected = true; // +1 because first option is placeholder
+
+            // Set default pax count
+            document.getElementById('paxCount').value = '1';
+
+            // Set placeholder values if input fields are empty
+            document.getElementById('clientName').placeholder = 'Ej: Juan Pérez González';
+            document.getElementById('clientEmail').placeholder = 'Ej: juan.perez@email.com';
+            document.getElementById('clientAddress').placeholder = 'Ej: Av. Principal 123, Viña del Mar, Chile';
+            document.getElementById('tripDescription').placeholder = 'Ej: Viaje a la Patagonia Austral | Luna de miel a Bora Bora';
+            document.getElementById('totalTripValue').placeholder = 'Ej: 3500000';
+            document.getElementById('amountPaid').placeholder = 'Ej: 500000';
+            document.getElementById('generalDetails').placeholder = `Ingrese cada detalle en una línea nueva. Ej:
+- Vuelos ida y vuelta desde Santiago
+- Alojamiento en hotel 4 estrellas
+- Desayuno diario
+- Tour guiado por la ciudad`;
+            document.getElementById('tripInclusionsTextarea').placeholder = '¿Algún otro servicio? Ej: Seguro adicional, Actividades especiales...';
 
             // Add keyboard shortcuts
             document.addEventListener('keydown', function(e) {
                 // Ctrl+Enter to generate receipt
                 if (e.ctrlKey && e.key === 'Enter') {
                     e.preventDefault();
-                    generateReceipt();
+                    document.getElementById('receiptForm').dispatchEvent(new Event('submit'));
                 }
                 
                 // Ctrl+P to print when receipt is visible
@@ -1025,38 +1340,6 @@ Asesoría 24 horas</textarea>
                     printReceipt();
                 }
             });
-
-            // Initialize balance calculation
-            updateBalance();
-        });
-
-        // Add currency formatting on blur for number inputs
-        document.getElementById('totalTripValue').addEventListener('blur', function() {
-            if (this.value) {
-                const value = parseFloat(this.value);
-                if (!isNaN(value)) {
-                    // You could add visual feedback here
-                }
-            }
-        });
-
-        document.getElementById('amountPaid').addEventListener('blur', function() {
-            if (this.value) {
-                const value = parseFloat(this.value);
-                if (!isNaN(value)) {
-                    // You could add visual feedback here
-                }
-            }
-        });
-
-        // Add form reset confirmation
-        document.querySelector('button[type="reset"]').addEventListener('click', function(e) {
-            if (!confirm('¿Está seguro de que desea limpiar todo el formulario?')) {
-                e.preventDefault();
-            } else {
-                // Hide receipt preview when form is reset
-                document.getElementById('receiptPreview').style.display = 'none';
-            }
         });
     </script>
 </body>
